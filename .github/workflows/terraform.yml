@@ -1,0 +1,58 @@
+name: Terraform Infrastructure Management
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select the environment to provision'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - stage
+          - test
+          - production
+      action:
+        description: 'Select the action to perform'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: environments/${{ inputs.environment }}
+
+      - name: Terraform Plan
+        if: inputs.action == 'plan'
+        run: terraform plan
+        working-directory: environments/${{ inputs.environment }}
+
+      - name: Terraform Apply
+        if: inputs.action == 'apply'
+        run: terraform apply -auto-approve
+        working-directory: environments/${{ inputs.environment }}
+
+      - name: Terraform Destroy
+        if: inputs.action == 'destroy'
+        run: terraform destroy -auto-approve
+        working-directory: environments/${{ inputs.environment }}
