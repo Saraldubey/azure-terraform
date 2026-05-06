@@ -6,8 +6,8 @@
 .terraform.lock.hcl
 
 # Default variable definitions
-terraform.tfvars
-**/terraform.tfvars
+#terraform.tfvars
+#**/terraform.tfvars
 terraform.tfvars.local
 override.tf
 

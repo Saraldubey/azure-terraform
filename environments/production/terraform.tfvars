@@ -1,0 +1,27 @@
+resource_group_name          = "spm-prod-rg"
+location                     = "East US"
+storage_account_name         = "spmprodstorageacct"
+storage_account_tier         = "Standard"
+storage_replication_type     = "LRS"
+virtual_network_name         = "spm-prod-vnet"
+address_space                = ["10.0.0.0/16"]
+subnet_name                  = "spm-prod-subnet"
+subnet_address_prefix        = ["10.0.2.0/24"]
+public_ip_name               = "spm-prod-public-ip"
+network_security_group_name  = "spm-prod-nsg"
+network_interface_name       = "spm-prod-nic"
+vm_name                      = "spm-prod-vm"
+vm_size                      = "Standard_F2"
+admin_username               = "adminuser"
+ssh_public_key_path          = "~/.ssh/id_rsa.pub"
+os_disk_caching              = "ReadWrite"
+os_disk_storage_account_type = "Standard_LRS"
+image_publisher              = "Canonical"
+image_offer                  = "UbuntuServer"
+image_sku                    = "16.04-LTS"
+image_version                = "latest"
+tags = {
+  Environment = "production"
+  Project     = "Example"
+  ManagedBy   = "Terraform"
+}
