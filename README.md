@@ -17,17 +17,20 @@ This Terraform configuration provisions an Azure infrastructure with the followi
 
 1. **Terraform**: Version 1.0 or later
 2. **Azure CLI**: Installed and authenticated
+
    ```bash
    az login
    ```
+
 3. **SSH Key**: Generate a public/private key pair
+
    ```bash
    ssh-keygen -t rsa -b 4096 -f ~/.ssh/id_rsa
    ```
 
 ## Project Structure
 
-```
+```text
 ├── providers.tf              # Root provider configuration
 ├── variables.tf              # Root variable definitions (legacy placeholder)
 ├── terraform.tfvars          # Root tfvars sample
@@ -52,32 +55,38 @@ This Terraform configuration provisions an Azure infrastructure with the followi
 Use the environment folders to deploy each target environment.
 
 ### 1. Initialize Terraform for an environment
+
 ```bash
 cd environments/dev
 terraform init
 ```
 
 ### 2. Validate Configuration
+
 ```bash
 terraform validate
 ```
 
 ### 3. Plan Deployment
+
 ```bash
 terraform plan -out=tfplan
 ```
 
 ### 4. Apply Configuration
+
 ```bash
 terraform apply tfplan
 ```
 
 ### 5. View Outputs
+
 ```bash
 terraform output
 ```
 
 ### 6. Destroy Resources
+
 ```bash
 terraform destroy
 ```
@@ -87,7 +96,7 @@ terraform destroy
 Key variables can be customized in `terraform.tfvars`:
 
 | Variable | Description | Default |
-|----------|-------------|---------|
+| ---------- | ------------- | --------- |
 | `resource_group_name` | Azure Resource Group name | example-resources |
 | `location` | Azure region | East US |
 | `storage_account_name` | Storage account name (must be globally unique) | examplestorageacct |
@@ -111,7 +120,8 @@ After deployment, the following outputs are available:
 
 ## Security Notes
 
-⚠️ **Important**: 
+⚠️ **Important**:
+
 - The Network Security Group currently allows SSH from any source (`0.0.0.0/0`). Restrict this to your specific IP in production.
 - Store the `terraform.tfvars` file securely and do not commit it to version control if it contains sensitive values.
 - Use `terraform.tfvars.local` for local overrides (ignored by git).
@@ -125,6 +135,7 @@ ssh adminuser@<vm_public_ip_address>
 ```
 
 Get the public IP:
+
 ```bash
 terraform output vm_public_ip_address
 ```
@@ -141,16 +152,19 @@ terraform plan -out=tfplan
 ## Troubleshooting
 
 **SSH Key Not Found**:
+
 ```bash
 # Ensure your SSH key exists
 ls ~/.ssh/id_rsa.pub
 ```
 
 **Storage Account Name Conflict**:
+
 - Storage account names must be globally unique and 3-24 characters (lowercase alphanumeric only)
 - Modify `storage_account_name` in `terraform.tfvars`
 
 **Azure Authentication Failed**:
+
 ```bash
 az login
 az account show
@@ -166,6 +180,7 @@ az account show
 ## Cleanup
 
 To remove all resources:
+
 ```bash
 terraform destroy
 ```
